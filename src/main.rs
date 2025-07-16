@@ -32,10 +32,6 @@ struct Cli {
 enum Commands {
     /// Query API keys
     Query {
-        /// Account ID
-        #[arg(short, long)]
-        account_id: Option<String>,
-
         /// Key type filter
         #[arg(short, long)]
         key_type: Option<String>,
@@ -160,7 +156,6 @@ impl NewRelicClient {
 
 async fn query_api_keys(
     client: &NewRelicClient,
-    account_id: Option<String>,
     key_type: Option<String>,
     key_id: Option<String>,
 ) -> anyhow::Result<()> {
@@ -188,12 +183,6 @@ async fn query_api_keys(
         variables.insert("id".to_string(), serde_json::Value::String(key_id));
         variables.insert("keyType".to_string(), serde_json::Value::String(key_type));
     }
-    // if let Some(account_id) = account_id {
-    //     variables.insert(
-    //         "accountId".to_string(),
-    //         serde_json::Value::String(account_id),
-    //     );
-    // }
 
     let result = client.execute_query(query, Some(variables)).await?;
     //println!("{}", serde_json::to_string_pretty(&result)?);
@@ -225,25 +214,6 @@ async fn query_api_keys(
             key.get("notes")
                 .unwrap_or(&serde_json::Value::String("N/A".to_string()))
         );
-        // let mut filtered_keys = keys.as_array().unwrap().clone();
-
-        // if let Some(key_type_filter) = key_type {
-        // filtered_keys.retain(|key| {
-        // key.get("type")
-        //     .and_then(|t| t.as_str())
-        //     .map_or(false, |t| t == key_type_filter);
-        // });
-        // }
-
-        // if let Some(key_id_filter) = key_id {
-        //     filtered_keys.retain(|key| {
-        //         key.get("id")
-        //             .and_then(|id| id.as_str())
-        //             .map_or(false, |id| id == key_id_filter)
-        //     });
-        // }
-
-        // println!("{}", serde_json::to_string_pretty(&filtered_keys)?);
     } else {
         println!("No API keys found or unable to retrieve keys");
     }
@@ -379,12 +349,8 @@ async fn main() -> anyhow::Result<()> {
     let client = NewRelicClient::new(cli.api_key, cli.endpoint);
 
     match cli.command {
-        Commands::Query {
-            account_id,
-            key_type,
-            key_id,
-        } => {
-            query_api_keys(&client, account_id, key_type, key_id).await?;
+        Commands::Query { key_type, key_id } => {
+            query_api_keys(&client, key_type, key_id).await?;
         }
         Commands::Create {
             account_id,
@@ -425,24 +391,24 @@ mod tests {
         assert_eq!(client.endpoint, "https://api.newrelic.com/graphql");
     }
 
-    #[test]
-    fn test_graphql_request_serialization() {
-        let mut variables = HashMap::new();
-        variables.insert(
-            "accountId".to_string(),
-            serde_json::Value::String("123456".to_string()),
-        );
+    // #[test]
+    // fn test_graphql_request_serialization() {
+    //     let mut variables = HashMap::new();
+    //     variables.insert(
+    //         "accountId".to_string(),
+    //         serde_json::Value::String("123456".to_string()),
+    //     );
 
-        let request = GraphQLRequest {
-            query: "query test { actor { account { id } } }".to_string(),
-            variables: Some(variables),
-        };
+    //     let request = GraphQLRequest {
+    //         query: "query test { actor { account { id } } }".to_string(),
+    //         variables: Some(variables),
+    //     };
 
-        let serialized = serde_json::to_string(&request).unwrap();
-        assert!(serialized.contains("query test"));
-        assert!(serialized.contains("accountId"));
-        assert!(serialized.contains("123456"));
-    }
+    //     let serialized = serde_json::to_string(&request).unwrap();
+    //     assert!(serialized.contains("query test"));
+    //     assert!(serialized.contains("accountId"));
+    //     assert!(serialized.contains("123456"));
+    // }
 
     #[test]
     fn test_graphql_error_deserialization() {

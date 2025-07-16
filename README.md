@@ -36,48 +36,48 @@ The CLI requires a New Relic User API key. You can provide it in two ways:
 
 ```bash
 # Query all API keys
-newrelic-apikeys-cli query
+#newrelic-apikeys-cli query
 
 # Query API keys for a specific account
-newrelic-apikeys-cli query --account-id 123456
+#newrelic-apikeys-cli query --account-id 123456
 
 # Query API keys of a specific type
-newrelic-apikeys-cli query --key-type USER
+#newrelic-apikeys-cli query --key-type USER
 
 # Query for a specific key ID
-newrelic-apikeys-cli query --key-id "12345678-1234-1234-1234-123456789012"
+#newrelic-apikeys-cli query --key-id "12345678-1234-1234-1234-123456789012"
 
 # Query with multiple filters
-newrelic-apikeys-cli query --account-id 123456 --key-type INGEST --key-id "specific-key-id"
+newrelic-apikeys-cli query --key-type INGEST --key-id "specific-key-id"
 ```
 
 #### Create API Key
 
 ```bash
 # Create a new API key
-newrelic-apikeys-cli create --account-id 123456 --key-type USER --name "My API Key"
+#newrelic-apikeys-cli create --account-id 123456 --key-type USER --name "My API Key"
 
 # Create with notes
-newrelic-apikeys-cli create --account-id 123456 --key-type INGEST --name "Data Ingestion Key" --notes "For production data ingestion"
+#newrelic-apikeys-cli create --account-id 123456 --key-type INGEST --name "Data Ingestion Key" --notes "For production data ingestion"
 ```
 
 #### Update API Key
 
 ```bash
 # Update key name
-newrelic-apikeys-cli update --key-id "key-uuid" --name "New Name"
+#newrelic-apikeys-cli update --key-id "key-uuid" --name "New Name"
 
 # Update notes
-newrelic-apikeys-cli update --key-id "key-uuid" --notes "Updated description"
+#newrelic-apikeys-cli update --key-id "key-uuid" --notes "Updated description"
 
 # Update both name and notes
-newrelic-apikeys-cli update --key-id "key-uuid" --name "New Name" --notes "New description"
+#newrelic-apikeys-cli update --key-id "key-uuid" --name "New Name" --notes "New description"
 ```
 
 #### Delete API Key
 
 ```bash
-# Delete an API key
+# Delete an INGEST API key
 newrelic-apikeys-cli delete --key-id "key-uuid"
 ```
 
@@ -96,16 +96,16 @@ newrelic-apikeys-cli delete --key-id "key-uuid"
 export NEW_RELIC_API_KEY="NRAK-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
 # List all API keys with verbose output
-newrelic-apikeys-cli -v query
+#newrelic-apikeys-cli -v query
 
 # Search for a specific key by ID
-newrelic-apikeys-cli query --key-id "12345678-1234-1234-1234-123456789012"
+#newrelic-apikeys-cli query --key-id "12345678-1234-1234-1234-123456789012"
 
 # Create a user API key
-newrelic-apikeys-cli create -a 123456 -k USER -n "My User Key"
+newrelic-apikeys-cli create -k USER -n "My User Key ID"
 
 # Update a key's name
-newrelic-apikeys-cli update -k "12345678-1234-1234-1234-123456789012" -n "Updated Key Name"
+#newrelic-apikeys-cli update -k "12345678-1234-1234-1234-123456789012" -n "Updated Key Name"
 
 # Delete a key
 newrelic-apikeys-cli delete -k "12345678-1234-1234-1234-123456789012"
@@ -117,8 +117,6 @@ Common New Relic API key types:
 
 - `USER`: User API keys for querying data
 - `INGEST`: Ingest API keys for sending data to New Relic
-- `BROWSER`: Browser monitoring keys
-- `MOBILE`: Mobile monitoring keys
 
 ## Error Handling
 
