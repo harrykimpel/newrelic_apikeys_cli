@@ -346,7 +346,7 @@ async fn update_api_key(
 async fn delete_api_key(client: &NewRelicClient, key_id: String) -> anyhow::Result<()> {
     let query = r#"
         mutation($keyId: String!) {
-            apiAccessDeleteKeys(keys: [{id: $keyId}]) {
+            apiAccessDeleteKeys(keys: {ingestKeyIds: $keyId}) {
                 deletedKeys {
                     id
                 }
