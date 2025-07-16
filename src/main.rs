@@ -6,7 +6,7 @@ use std::collections::HashMap;
 #[derive(Parser)]
 #[command(name = "newrelic-apikeys-cli")]
 #[command(about = "A CLI tool for interacting with New Relic's Nerdgraph API")]
-#[command(version = "0.1.0")]
+#[command(version = "0.0.1")]
 struct Cli {
     /// New Relic API key
     #[arg(short, long, env = "NEW_RELIC_API_KEY")]
