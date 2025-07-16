@@ -1,6 +1,6 @@
 [package]
 name = "newrelic_apikeys_cli"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2021"
 description = "A CLI tool for interacting with New Relic's Nerdgraph API"
 authors = ["Harry Kimpel <harrykimpel@hotmail.com>"]
